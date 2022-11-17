@@ -6,11 +6,17 @@
     <p>{{ listing.description }}</p>
     <h3>€{{ listing.price }}</h3>
     <p>X bid(s) so far.</p>
+    <!-- if bid is your bid post "Your bid is the current bid." -->
+    <!-- else, "{username}'s bid is the current bid." -->
     <form action="{% url 'listing' listing.id %}" method="post">
         {% csrf_token %}
         <div class="form-group">
             <input class="form-control" autofocus type="text" name="bid" placeholder="Bid">
         </div>
+        <input type="hidden" name="{{ bidder }}" value="{{ user.id }}">
+        {% if message %}
+            <input class="btn btn-primary" type="submit" onclick="alert('Invalid Bid.')" value="Place Bid">
+        {% endif %}
         <input class="btn btn-primary" type="submit" value="Place Bid">
     </form>
     <h4>Details</h4>

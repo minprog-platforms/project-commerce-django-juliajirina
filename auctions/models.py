@@ -14,9 +14,10 @@ class Listing(models.Model):
         return f"{self.id}.{self.title}, {self.description}: {self.price}"
 
 class Bidding(models.Model):
-    list_name = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="all_listings")
-    bid = models.PositiveIntegerField
-
+    bid = models.ManyToManyField(Listing, blank=True, related_name="current_bid")
+    bidder = models.ManyToManyField(User, blank=True, related_name="name_bidder")
+    list_name = models.ManyToManyField(Listing, blank=True, related_name="all_listings")
+    
     def __str__(self) -> str:
         return f"{self.list_name}: {self.bid}"
 

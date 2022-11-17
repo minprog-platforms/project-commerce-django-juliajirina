@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
@@ -19,7 +20,7 @@ def listing(request, listing_id):
         "listing": listing
     })
 
-
+@login_required(redirect_field_name='auctions/login.html')
 def add(request):
     # Check if method is POST
     if request.method == "POST":
@@ -41,6 +42,33 @@ def add(request):
 
     else:
         return render(request, "auctions/add.html")
+
+def bidding(request, listing_id):
+    # For a post request, add a new bid (aka update bid)
+    if request.method == "POST":
+
+        # Accessing the listing
+        listing = Listing.objects.get(pk=listing_id)
+
+        # Finding the user id from the submitted form data
+        bidder_id = request.POST["bidder"]
+
+        # Finding the bidder based on the id
+        bidder = User.objects.get(pk=bidder_id)
+
+        # Access bid
+        bid = request.POST["bid"]
+
+        # Update current bid
+        if bid > listing.price:
+            listing.price = bid
+            # Redirect user to listing page
+            return HttpResponseRedirect(reverse("listing", args=(listing.id,)))
+
+        else:
+            return render(request, "auctions/listing.html", {
+                "message": "Invalid Bid"
+            })
 
 
 def login_view(request):
