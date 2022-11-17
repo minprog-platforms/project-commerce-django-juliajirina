@@ -20,6 +20,28 @@ def listing(request, listing_id):
     })
 
 
+def add(request):
+    # Check if method is POST
+    if request.method == "POST":
+
+        # Accessing the user of auctions
+        "TODO"
+
+        # Finding title of listing
+        title = request.POST["title"]
+        description = request.POST["description"]
+        price = request.POST["price"]
+
+        # Attempt to create new listing
+        listing = Listing(title=title, description=description, price=price)
+        listing.save()
+
+        #Redirect user to list of tasks
+        return HttpResponseRedirect(reverse("index"))
+
+    else:
+        return render(request, "auctions/add.html")
+
 
 def login_view(request):
     if request.method == "POST":

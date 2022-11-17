@@ -1,0 +1,33 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Listing: {{ listing.title }}</h2>
+    <p>plaatje van product komt later</p>
+    <p>{{ listing.description }}</p>
+    <h3>€{{ listing.price }}</h3>
+    <p>X bid(s) so far.</p>
+    <form action="{% url 'listing' listing.id %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <input class="form-control" autofocus type="text" name="bid" placeholder="Bid">
+        </div>
+        <input class="btn btn-primary" type="submit" value="Place Bid">
+    </form>
+    <h4>Details</h4>
+    <ul>
+        {% for listing in listings %}
+            <li>Listed by: {{ User.username }}</li>
+        {% empty %}
+            <li>No details.</li>
+        {% endfor %}
+    </ul>
+    <h4>Comments</h4>
+    <ul>
+        {% for comment in comments %}
+            <li>Commented by: {{ Comments.username }}</li>
+            <li>Comment: {{ Comments.commeent }}</li>
+        {% empty %}
+            <li>No comments.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
