@@ -20,7 +20,7 @@ class Bidding(models.Model):
     def __str__(self) -> str:
         return f"{self.list_name}: {self.bid}"
 
-class Comments(models.Model):
+class Comment(models.Model):
     username = models.CharField(max_length=64) #username
     comment = models.TextField
 
